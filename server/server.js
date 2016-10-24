@@ -11,7 +11,7 @@ var currentSeeker;
 function init() {
 	players = [];
 
-	socket = io.listen(1337, {"transports": "websocket"});
+	socket = io.listen(server);
 	// socket.configure(function(){
 		
 	// 	socket.set("log level", 2);

@@ -12,7 +12,7 @@ MainState.prototype = {
 
     create: function(){
         //connect to server
-        socket = io.connect("http://localhost:1337", {transports:["websocket"]});
+        socket = io.connect("", {transports:["websocket"]});
         socket.on("connect", onSocketConnected);
         socket.on("disconnect", onSocketDisconnect);
         socket.on("new player", onNewPlayer);
