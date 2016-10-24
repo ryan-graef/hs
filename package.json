@@ -1,0 +1,24 @@
+{
+  "name": "hs",
+  "version": "1.0.0",
+  "description": "A multiplayer hide-and-go-seek game",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cudabear/hs.git"
+  },
+  "author": "Cudabear",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cudabear/hs/issues"
+  },
+  "homepage": "https://github.com/Cudabear/hs#readme"
+}
