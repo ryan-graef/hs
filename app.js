@@ -9,5 +9,5 @@ app.use(express.static(__dirname + '/client'));
 // });
 
 app.listen(3000, function() {
-
+	require(__dirname + '/server/server.js');
 });
