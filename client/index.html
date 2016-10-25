@@ -5,7 +5,9 @@
     <!-- stylesheets -->
     <style type="text/css">
         body { padding: 0; margin: 0; background-color: gray;}
-        #game{margin-left: auto; margin-right: auto;}
+        #game{margin-left: auto; margin-right: auto; position: relative;}
+        #game canvas { position: relative; z-index: 1; }
+        #config-screen {position: absolute; float: left; top: 35%; left: 50%; margin-left: -175px; margin-top: -50px; z-index: 2; background: #888; width: 350px; height: 100px; border: 1px dashed black; padding:5px;}
     </style>
 
     <!-- font family import -->
@@ -22,13 +24,14 @@
     <script type="text/javascript" src="src/state/StartupState.js"></script>
     <script type="text/javascript" src="src/state/LoadState.js"></script>
     <script type="text/javascript" src="src/state/MainState.js"></script>
+    <script type="text/javascript" src="src/state/ConfigState.js"></script>
     <script type="text/javascript" src="src/util/Config.js"></script>
     <script type="text/javascript" src="src/util/EventTracking.js"></script>
 
     <!-- socket.io file -->
     <script type="text/javascript" src="lib/socket/socket.io.js"></script>
 </head>
-<body>
+<body style="position: relative">
     <div id="game">
 
     </div>

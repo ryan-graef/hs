@@ -34,9 +34,11 @@ function setEventHandlers(){
 			}
 		}
 
-		if(timeUntilNewSeeker <= 0 || players.length <= 1 || !anyoneAlive){
+		if(timeUntilNewSeeker <= 0 || !anyoneAlive){
 			timeUntilNewSeeker = timeBetweenSeekers;
-			pickNewSeeker();
+			if(players.length > 1){
+				pickNewSeeker();
+			}
 		}
 	}, 50);
 }
@@ -91,15 +93,15 @@ function onClientDisconnect(){
 }
 
 function onNewPlayer(data){
-	util.log("New Player created: "+this.id+" at "+data.x+","+data.y);
+	util.log("New Player created: "+data.displayName+" at "+data.x+","+data.y);
 
-	this.broadcast.emit("new player", {id: this.id, x: data.x, y: data.y});
+	this.broadcast.emit("new player", {id: this.id, x: data.x, y: data.y, displayName: data.displayName});
 
-	players.push(new Player(data.x, data.y, 0, this.id));
+	players.push(new Player(data.x, data.y, 0, this.id, data.displayName));
 	this.emit("assign id", {id: this.id});
 	for(var i = 0; i < players.length; i++){
 		if(players[i].id !== this.id){
-			this.emit("new player", {id: players[i].id, x: players[i].x, y: players[i].y});
+			this.emit("new player", {id: players[i].id, x: players[i].x, y: players[i].y, displayName: players[i].displayName});
 		}
 	}
 

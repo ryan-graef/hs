@@ -48,10 +48,29 @@ MainState.prototype = {
     update: function(){
         if(localPlayer){
             if(localPlayer.alive){
+                localPlayer.data.nameText.x = localPlayer.x - localPlayer.data.nameText.width/2;
+                localPlayer.data.nameText.y = localPlayer.y - 50;
+
+                localPlayer.data.darkMask.refresh(localPlayer.rotation);
+                localPlayer.data.lamp.x = localPlayer.x;
+                localPlayer.data.lamp.y = localPlayer.y;
+                localPlayer.data.lamp.lighting.objects = this.sightBlockers;
+                localPlayer.data.darkMask.objects = this.sightBlockers;
+                localPlayer.data.lamp.refresh(localPlayer.rotation);
+                localPlayer.data.darkMask.bringToTop();
+                localPlayer.data.lamp.bringToTop();
+                localPlayer.bringToTop();
+                localPlayer.data.nameText.bringToTop();
+
                 localPlayer.alpha = 1;
                 remotePlayers.forEach(function(player){
                     if(player.alive && this.isVisible(localPlayer, player)){
                         player.alpha = 1;
+                        player.data.nameText.alpha = 1;
+                        player.data.nameText.x = player.x - player.data.nameText.width/2;
+                        player.data.nameText.y = player.y - 50;
+                        player.data.nameText.bringToTop();
+                        player.data.nameText.addColor("#FFFFFF", 0);
 
                         if(localPlayer.data.status == 'seeker'){
                             player.alive = false;
@@ -59,8 +78,10 @@ MainState.prototype = {
                         }
                     }else if(!player.alive){
                         player.alpha = 0.5;
+                        player.data.nameText.addColor("#FF0000", 0);
                     }else{
                         player.alpha = 0;
+                        player.data.nameText.alpha = 0;
                     }
                 }, this);
 
@@ -83,21 +104,13 @@ MainState.prototype = {
 
                 game.physics.arcade.collide(localPlayer, this.foreground);
 
-                localPlayer.data.darkMask.refresh(localPlayer.rotation);
-                localPlayer.data.lamp.x = localPlayer.x;
-                localPlayer.data.lamp.y = localPlayer.y;
-                localPlayer.data.lamp.lighting.objects = this.sightBlockers;
-                localPlayer.data.darkMask.objects = this.sightBlockers;
-                localPlayer.data.lamp.refresh(localPlayer.rotation);
-                localPlayer.data.darkMask.bringToTop();
-                localPlayer.data.lamp.bringToTop();
-                localPlayer.bringToTop();
-
                 if(statusText && statusText2){
                     game.world.bringToTop(statusText);
                     game.world.bringToTop(statusText2);
 
                     if(localPlayer.alive){
+                        localPlayer.data.nameText.addColor("#FFFFFF", 0);
+
                         if(localPlayer.data.status == 'seeker'){
                             statusText2.setText('You are the seeker!');
                         }else{
@@ -105,6 +118,7 @@ MainState.prototype = {
                         }
                     }else{
                         statusText2.setText('You are dead.  Not big surprise.');
+                        localPlayer.data.nameText.addColor("#FF0000", 0);
                     }
                 }
 

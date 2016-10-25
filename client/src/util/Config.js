@@ -6,7 +6,8 @@ Config = {
         //{key: "SpriteKey", imagePath: "path/to/image"}
         {key: "phaser", imagePath: "res/img/wrapper/phaser-logo-small.png"},
         {key: "pixel-guy", imagePath: "res/img/pixel-guy.png"},
-        {key: "tileset", imagePath: "res/img/tileset.png"}
+        {key: "tileset", imagePath: "res/img/tileset.png"},
+        {key: 'exclamation', imagePath: 'res/img/exclamation.png'}
     ],
     animSprites: [
         //{key: "SpriteKey", imagePath: "path/to/image", jsonPath: "path/to/json"}

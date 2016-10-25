@@ -1,6 +1,7 @@
 var game;
 var socket;
-var localPlayer;
+var localPlayer = {};
+var displayName = "Scaredy Cat";
 var remotePlayers = [];
 
 var timeLeft = 0;
@@ -14,9 +15,10 @@ document.addEventListener("DOMContentLoaded", function(event){
 	game.state.add('StartupState', new StartupState());
 	game.state.add('LoadState', new LoadState());
 	game.state.add('MainState', new MainState());
+	game.state.add('ConfigState', new ConfigState());
 
 	//kickoff the starting state, logo if not on localhost, mainstate otherwise
-    if(true || isDev()){
+    if(isDev()){
         game.state.start('LoadState');
     }else{
         game.state.start('StartupState');
@@ -30,17 +32,21 @@ onSocketConnected = function(){
 	var y = game.world.randomY;
 	localPlayer = game.add.sprite(x, y, 'pixel-guy');
 	localPlayer.data = {};
+	localPlayer.data.displayName = displayName;
 	localPlayer.anchor.setTo(0.5);
 	game.camera.follow(localPlayer);
 	game.physics.enable(localPlayer);
 	localPlayer.body.collideWorldBounds = true;
+	localPlayer.data.nameText = game.add.text(localPlayer.x, localPlayer.y, localPlayer.data.displayName, { font: "26px Arial", fill: "#ffffff", align: "center" });
+	localPlayer.data.exclamation = game.add.sprite(localPlayer.x, localPlayer.y, 'exclamation');
+	localPlayer.data.exclamation.alpha = 0;
 
 	localPlayer.data.lamp = game.add.illuminated.lamp(localPlayer.x, localPlayer.y, {distance: 250, color: 'rgba(255,225,255,0.2)', radius: 150});
 	localPlayer.data.lamp.createLighting([]);
 	localPlayer.data.darkMask = game.add.illuminated.darkMask([localPlayer.data.lamp], 'rgba(0,0,0,0.8)');
 	localPlayer.data.status = 'hider';
 
-	socket.emit("new player", {x: localPlayer.x, y: localPlayer.y});
+	socket.emit("new player", {x: localPlayer.x, y: localPlayer.y, displayName: displayName});
 }
 
 onSocketDisconnect = function(){
@@ -52,6 +58,12 @@ onNewPlayer = function(data){
 
 	var newSprite = game.add.sprite(data.x, data.y, 'pixel-guy');
 	newSprite.data = {};
+	newSprite.data.displayName = data.displayName;
+	newSprite.data.nameText = game.add.text(newSprite.x, newSprite.y, newSprite.data.displayName, { font: "26px Arial", fill: "#ffffff", align: "center" });
+	newSprite.data.nameText.alpha = 0;
+	newSprite.data.exclamation = game.add.sprite(newSprite.x, newSprite.y, 'exclamation');
+	newSprite.alpha = 0;
+	newSprite.data.exclamation.alpha = 0;
 	newSprite.data.id = data.id;
 	newSprite.anchor.setTo(0.5);
 	newSprite.data.status = 'hider';
@@ -108,6 +120,8 @@ onRemovePlayer = function(data){
 
 	for(var i = 0; i < remotePlayers.length; i++){
 		if(remotePlayers[i].data.id == data.id){
+			remotePlayers[i].data.exclamation.destroy();
+			remotePlayers[i].data.nameText.destroy();
 			remotePlayers[i].destroy();
 			remotePlayers.splice(i, 1);
 			break;
