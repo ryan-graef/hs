@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 	game.state.add('ConfigState', new ConfigState());
 
 	//kickoff the starting state, logo if not on localhost, mainstate otherwise
-    if(isDev()){
+    if(true || isDev()){
         game.state.start('LoadState');
     }else{
         game.state.start('StartupState');
